@@ -1,0 +1,22 @@
+def weights_equilibrium(weights: list[int]) -> int:
+    n = len(weights)
+    
+    for i in range(n):
+        left_moment = 0
+        for j in range(i):
+            left_moment += weights[j] * (i - j)
+        
+        right_moment = 0
+        for j in range(i + 1, n):
+            right_moment += weights[j] * (j - i)
+        
+        if left_moment == right_moment:
+            return i
+
+    return -1
+
+# Приклади
+print(weights_equilibrium([6, 6, 9]))  # Відповідь: -1
+print(weights_equilibrium([43, 51, 35, 4]))  # Відповідь: 1
+print(weights_equilibrium([19, 25, 5, 42, 38, 8, 34, 16, 14, 8, 47, 42, 4, 20, 23]))  # Відповідь: 7
+print(weights_equilibrium([7, 24, 3, 38]))  # Відповідь: 2
