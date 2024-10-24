@@ -1,0 +1,36 @@
+from typing import Callable
+
+def cached(func: Callable[[int], int]) -> Callable[[int], int]:
+    cache = {}
+
+    def wrapper(n: int) -> int:
+        if n in cache:
+            return cache[n]
+        result = func(n)
+        cache[n] = result
+        return result
+    
+    return wrapper
+
+@cached
+def fibonacci(n: int) -> int:
+    if n <= 1:
+        return n
+    return fibonacci(n - 1) + fibonacci(n - 2)
+
+def test_fibonacci_without_cache():
+    def fibonacci_no_cache(n: int) -> int:
+        if n <= 1:
+            return n
+        return fibonacci_no_cache(n - 1) + fibonacci_no_cache(n - 2)
+    
+    assert fibonacci_no_cache(0) == 0
+    assert fibonacci_no_cache(1) == 1
+    assert fibonacci_no_cache(5) == 5
+    assert fibonacci_no_cache(10) == 55
+
+def test_fibonacci_with_cache():
+    assert fibonacci(0) == 0
+    assert fibonacci(1) == 1
+    assert fibonacci(5) == 5
+    assert fibonacci(10) == 55
